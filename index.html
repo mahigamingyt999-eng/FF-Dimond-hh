@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>FF Diamond User Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;}
+.container{max-width:420px;margin:30px auto;background:#111;border-radius:12px;padding:20px;box-shadow:0 0 25px rgba(0,0,0,.7);}
+h1{text-align:center;color:#ffcc00;}
+input,select,button{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:16px;}
+button{background:#ffcc00;color:#000;font-weight:bold;cursor:pointer;}
+button:hover{background:#ffaa00;}
+.notice{font-size:12px;color:#ff7a7a;text-align:center;}
+#dashboard{display:none;}
+.success{background:#0f5132;padding:10px;border-radius:8px;text-align:center;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);}
+.modal-content{background:#1b1b1b;max-width:360px;margin:15% auto;padding:20px;border-radius:12px;}
+.modal h3{margin-top:0;color:#ffcc00;text-align:center;}
+.close{float:right;cursor:pointer;color:#ff7a7a;}
+.bkash{background:#e2136e;color:#fff;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px;}
+.small{font-size:12px;color:#bbb;text-align:center;}
+</style>
+</head>
+<body>
+<body>
+
+<!-- Top Help Line -->
+<div style="background:#00ff00;color:#000;text-align:center;padding:8px;font-weight:bold;cursor:pointer;" onclick="openWhatsApp()">
+  হেল্প লাইন: 01834151122 হোয়াটসঅ্যাপ নক করবেন
+</div>
+
+<script>
+function openWhatsApp(){
+  window.open('https://wa.me/01834151122','_blank');
+}
+</script>
+
+<!-- এরপর Login / Dashboard / Admin Panel div শুরু হবে -->
+<div class="container" id="login">
+  ...
+</div>
+<!-- Login -->
+<div class="container" id="login">
+  <h1>FF Diamond Login</h1>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button id="loginBtn">Login</button>
+  <div class="notice">Real dimond site</div>
+</div>
+
+<!-- Dashboard -->
+<div class="container" id="dashboard">
+  <h1>Free Fire Diamond</h1>
+  <input id="uid" placeholder="Enter FF UID">
+  <select id="diamond">
+    <option value="">Select Diamonds</option>
+    <option value="100">100 Diamonds - 70 BDT</option>
+    <option value="200">200 Diamonds - 150 BDT</option>
+  </select>
+  <button id="buyBtn">Continue</button>
+  <div id="msg"></div>
+  <div class="notice" style="margin-top:20px;text-align:center;color:#ffcc00;">
+    100%real site
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal" id="payModal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">✖</span>
+    <h3>bKash Payment - Free Fire Diamond</h3>
+    <div class="bkash">
+      bKash Payment Real<br>
+      <b>Number: 01308408604 সেনড মানি করবেন</b>
+    </div>
+    <p>Diamonds: <b id="dCount"></b></p>
+    <p>Amount: <b id="amount"></b> BDT</p>
+    <input id="bkashNum" placeholder="bKash Number (Demo)">
+    <input id="trxID" placeholder="TrxID (Demo)">
+    <button id="confirmPay">Submit Payment</button>
+    <div class="small">
+       Free Fire Diamond  — 
+    </div>
+  </div>
+</div>
+
+<script>
+// Elements
+const loginBtn=document.getElementById('loginBtn');
+const buyBtn=document.getElementById('buyBtn');
+const closeModalBtn=document.getElementById('closeModal');
+const confirmPayBtn=document.getElementById('confirmPay');
+const dashboardDiv=document.getElementById('dashboard');
+const loginDiv=document.getElementById('login');
+const payModal=document.getElementById('payModal');
+const userInput=document.getElementById('user');
+const passInput=document.getElementById('pass');
+const uidInput=document.getElementById('uid');
+const diamondSelect=document.getElementById('diamond');
+const dCount=document.getElementById('dCount');
+const amount=document.getElementById('amount');
+const msg=document.getElementById('msg');
+const bkashNum=document.getElementById('bkashNum');
+const trxID=document.getElementById('trxID');
+
+// Login
+loginBtn.addEventListener('click',()=>{
+  const u=userInput.value.trim();
+  const p=passInput.value.trim();
+  if(u && p){loginDiv.style.display='none';dashboardDiv.style.display='block';}
+  else alert("Enter username & password");
+});
+
+// Buy
+buyBtn.addEventListener('click',()=>{
+  const d=diamondSelect.value;
+  if(!uidInput.value.trim()) return alert("Enter FF UID");
+  if(!d) return alert("Select diamonds");
+  let amt=d==='100'?70:150;
+  dCount.innerText=d;
+  amount.innerText=amt+" BDT";
+  payModal.style.display='block';
+});
+
+// Close Modal
+closeModalBtn.addEventListener('click',()=>{payModal.style.display='none';});
+
+// Confirm Payment
+confirmPayBtn.addEventListener('click',()=>{
+  let order={uid:uidInput.value.trim(),diamond:diamondSelect.value,amount:amount.innerText,bkash:bkashNum.value.trim(),trx:trxID.value.trim()};
+  let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+  orders.push(order);
+  localStorage.setItem('orders',JSON.stringify(orders));
+  payModal.style.display='none';
+  msg.innerHTML="<div class='success'>✔ Payment Submitted (Demo)</div>";
+  uidInput.value='';diamondSelect.value='';bkashNum.value='';trxID.value='';
+});
+</script>
+
+</body>
+</html>
